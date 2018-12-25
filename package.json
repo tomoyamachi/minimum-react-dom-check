@@ -1,0 +1,29 @@
+{
+  "name": "react-starter-project",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "webpack": "webpack --mode production",
+    "start": "webpack-dev-server --watch --mode development"
+  },
+  "author": "Axel Rauschmayer",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14",
+    "why-did-you-update": "^1.0.6"
+  },
+  "dependencies": {
+    "react": "16.6.3",
+    "react-dom": "16.6.3"
+  }
+}
