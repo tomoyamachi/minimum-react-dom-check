@@ -1,13 +1,13 @@
 import React from "react";
 import {render} from 'react-dom';
 import {whyDidYouUpdate} from "why-did-you-update/es";
+
 whyDidYouUpdate(React);
 
-const initialState = {keys: [0]};
 class ButtonWithBind extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {...initialState}
+        this.state = {type: "WithBind"}
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -17,15 +17,15 @@ class ButtonWithBind extends React.Component {
     }
 
     render() {
-        return <div>{this.state.keys.map(key => (
-            <Button type='WithBind' key={key} index={key} handleClick={this.handleClick}/>))}</div>;
+        const {type} = this.state;
+        return <Button type={type} key={type} handleClick={this.handleClick}/>;
     }
 }
 
 class ButtonWithoutBind extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {...initialState}
+        this.state = {type: "WithoutBind"}
     }
 
     handleClick(message) {
@@ -34,45 +34,67 @@ class ButtonWithoutBind extends React.Component {
     }
 
     render() {
-        return <div>{this.state.keys.map(key => (
-            <Button type='WithoutBind' key={key} index={key} handleClick={this.handleClick.bind(this)}/>))}</div>;
+        const {type} = this.state;
+        return <Button type={type} key={type} handleClick={this.handleClick.bind(this)}/>;
     }
 }
 
-
-class ButtonClassState extends React.Component {
-    state = {...initialState}
-
-    handleClick = (message) => {
-        this.callAnother(message)
+class ButtonDirectCall extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {type: "DirectCall"}
     }
 
+    handleClick(message) {
+        console.log(message, this.props.count)
+        this.props.countUp();
+    }
+
+    render() {
+        const {type} = this.state;
+        return <Button type={type} key={type} handleClick={(message) => this.handleClick(message)}/>;
+    }
+}
+
+class ButtonCondition extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {type: "Condition"}
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick(message) {
+        console.log(message, this.props.count)
+        this.props.countUp();
+    }
+
+    render() {
+        const {type} = this.state;
+        return <Button type={type} key={type} handleClick={true && this.handleClick}/>;
+    }
+}
+
+class ButtonClassState extends React.Component {
+    state = {type: "ClassState"}
     handleClick = (message) => {
         console.log(message, this.props.count)
         this.props.countUp();
     }
 
     render() {
-        return <div>{this.state.keys.map(key => (
-            <Button type='ClassState' key={key} index={key} handleClick={this.handleClick}/>))}</div>;
+        const {type} = this.state;
+        return <Button type={type} key={type} handleClick={this.handleClick}/>;
     }
 }
 
-
 class Button extends React.PureComponent {
-    state = {toggle: false}
-    handleClick = () => {
-        this.setState(prevState => {
-            toggle: !prevState.toggle
-        })
-        this.props.handleClick(this.props.type)
-    }
+    state = {type: this.props.type}
 
     render() {
-        const {type, index} = this.props;
+        const {type, handleClick} = this.props;
         return (
-            <button key={index} onClick={() => this.handleClick(type)}>
-                {`${type}-${index} is ${this.state.toggle ? 'ON' : 'OFF'}`}
+            <button onClick={() => handleClick(type)}>
+                {type}
             </button>)
     }
 };
@@ -94,6 +116,8 @@ class OnlyChangeState extends React.Component {
         return (<div id={this.state.count}>
                 <ButtonWithBind count={this.state.count} countUp={this.countUp}/>
                 <ButtonWithoutBind count={this.state.count} countUp={this.countUp}/>
+                <ButtonDirectCall count={this.state.count} countUp={this.countUp}/>
+                <ButtonCondition count={this.state.count} countUp={this.countUp}/>
                 <ButtonClassState count={this.state.count} countUp={this.countUp}/>
             </div>
         )
