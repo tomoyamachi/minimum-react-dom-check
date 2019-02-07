@@ -87,6 +87,15 @@ class ButtonClassState extends React.Component {
     }
 }
 
+const ButtonFunctional = (props) => {
+    const handleClick = (message) => {
+        console.log(message, props.count);
+        props.countUp()
+    }
+    return <Button type="Functional" key="Functional" handleClick={handleClick}/>
+}
+
+
 class Button extends React.PureComponent {
     state = {type: this.props.type}
 
@@ -119,6 +128,7 @@ class OnlyChangeState extends React.Component {
                 <ButtonDirectCall count={this.state.count} countUp={this.countUp}/>
                 <ButtonCondition count={this.state.count} countUp={this.countUp}/>
                 <ButtonClassState count={this.state.count} countUp={this.countUp}/>
+                <ButtonFunctional count={this.state.count} countUp={this.countUp}/>
             </div>
         )
     }
